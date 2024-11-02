@@ -1,3 +1,13 @@
+# Deploying to GitHub pages
+
+On the 'main' branch in terminal run :
+
+### `npm run build`
+
+Then :
+
+### `npm run deploy`
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
