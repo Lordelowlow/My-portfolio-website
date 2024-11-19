@@ -1,26 +1,39 @@
 import React, { useEffect, useState } from 'react';
+import config from '../config';
 
 function Home() {
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
+    const [isMobile, setIsMobile] = useState(
+        typeof window !== 'undefined' ? window.innerWidth <= 768 : false
+    );
     useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth <= 768);
-        };
+        if (typeof window !== 'undefined') {
+            const handleResize = () => {
+                setIsMobile(window.innerWidth <= 768);
+            };
 
-        window.addEventListener('resize', handleResize);
+            const debounce = (func, delay) => {
+                let timer;
+                return () => {
+                    clearTimeout(timer);
+                    timer = setTimeout(func, delay);
+                };
+            };
 
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
+            const debouncedHandleResize = debounce(handleResize, 200);
+
+            window.addEventListener('resize', debouncedHandleResize);
+            return () => {
+                window.removeEventListener('resize', debouncedHandleResize);
+            };
+        }
     }, []);
 
     return (
         <div>
             {isMobile ? (
-                <spline-viewer key="mobile" url="https://prod.spline.design/VZtZ6j1iur7oC7ny/scene.splinecode"></spline-viewer>
+                <spline-viewer key="mobile" loading-anim-type="none" url={config.splineUrls.mobile}/>
             ) : (
-                <spline-viewer key="desktop" url="https://prod.spline.design/GvsgZL4oq7cauXNz/scene.splinecode"></spline-viewer>
+                <spline-viewer key="desktop" loading-anim-type="none" url={config.splineUrls.desktop}/>
             )}
         </div>
     );

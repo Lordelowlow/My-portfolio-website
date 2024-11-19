@@ -7,8 +7,9 @@ import Contact from './components/Contact';
 import Home from './components/Home'; // Import Home Component
 
 function App() {
+    const basename = process.env.PUBLIC_URL || '/';
     return (
-        <Router basename="/My-portfolio-website">
+        <Router basename={basename}>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/portfolio" element={<Portfolio />} />
