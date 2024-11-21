@@ -8,7 +8,8 @@ function Home() {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const handleResize = () => {
-                setIsMobile(window.innerWidth <= 768);
+                const isPortrait = window.innerHeight > window.innerWidth;
+                setIsMobile(window.innerWidth <= 768 || isPortrait);
             };
 
             const debounce = (func, delay) => {
@@ -22,8 +23,10 @@ function Home() {
             const debouncedHandleResize = debounce(handleResize, 200);
 
             window.addEventListener('resize', debouncedHandleResize);
+            window.addEventListener('orientationchange', handleResize);
             return () => {
                 window.removeEventListener('resize', debouncedHandleResize);
+                window.removeEventListener('orientationchange', handleResize);
             };
         }
     }, []);
@@ -31,9 +34,9 @@ function Home() {
     return (
         <div>
             {isMobile ? (
-                <spline-viewer key="mobile" loading-anim-type="none" url={config.splineUrls.mobile}/>
+                <spline-viewer key="mobile" loading-anim-type="spinner-big-light" url={config.splineUrls.mobile}/>
             ) : (
-                <spline-viewer key="desktop" loading-anim-type="none" url={config.splineUrls.desktop}/>
+                <spline-viewer key="desktop" loading-anim-type="spinner-big-light" url={config.splineUrls.desktop}/>
             )}
         </div>
     );
